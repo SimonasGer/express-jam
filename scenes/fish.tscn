@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfuarfrhhpjuj"]
+
+[ext_resource type="Script" uid="uid://u23y76pm0ie8" path="res://scripts/Fish.cs" id="1_8g0i4"]
+[ext_resource type="Texture2D" uid="uid://dugnmpgl163ep" path="res://sprites/fish.png" id="1_n6yr6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n6yr6"]
+size = Vector2(31, 10)
+
+[node name="Fish" type="CharacterBody2D"]
+script = ExtResource("1_8g0i4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_n6yr6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_n6yr6")

@@ -19,15 +19,17 @@ texture = ExtResource("1_3vyb7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+position_smoothing_enabled = true
 
 [node name="ColorRect" type="ColorRect" parent="Camera2D"]
+z_index = 1000
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -174.0
-offset_right = 303.0
-offset_bottom = 168.0
+offset_left = -446.0
+offset_top = -276.0
+offset_right = 471.0
+offset_bottom = 278.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
