@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bn3tpjej8dqxq"]
+
+[ext_resource type="Script" uid="uid://br2ra4chl4jo3" path="res://scripts/LevelManager.cs" id="1_d5gag"]
+[ext_resource type="PackedScene" uid="uid://do8836drwmmek" path="res://scenes/player.tscn" id="1_whmo1"]
+
+[node name="Underwater" type="Node2D"]
+script = ExtResource("1_d5gag")
+
+[node name="Player" parent="." instance=ExtResource("1_whmo1")]
