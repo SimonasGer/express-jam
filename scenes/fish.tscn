@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dugnmpgl163ep" path="res://sprites/fish.png" id="1_n6yr6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n6yr6"]
-size = Vector2(31, 10)
+size = Vector2(31, 13)
 
 [node name="Fish" type="CharacterBody2D"]
 script = ExtResource("1_8g0i4")

@@ -1,0 +1,69 @@
+[gd_scene load_steps=9 format=4 uid="uid://csp63sropugao"]
+
+[ext_resource type="Texture2D" uid="uid://h8vmuuassdya" path="res://sprites/map.png" id="1_oru6e"]
+[ext_resource type="Script" uid="uid://b0h73agh3ajfx" path="res://scripts/WorldMap.cs" id="1_u82pb"]
+[ext_resource type="Texture2D" uid="uid://cylxtt8ka5flk" path="res://sprites/player.png" id="2_qqero"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qqero"]
+texture = ExtResource("1_oru6e")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_u82pb"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_qqero")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u82pb"]
+texture = ExtResource("1_oru6e")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_pls23"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_u82pb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqero"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="WorldMap" type="Node2D"]
+script = ExtResource("1_u82pb")
+
+[node name="Fow" type="TileMapLayer" parent="."]
+z_index = 1
+tile_map_data = PackedByteArray("AAD9//3/AAABAAAAAAD+//3/AAABAAAAAAD///3/AAABAAAAAAAAAP3/AAABAAAAAAABAP3/AAABAAAAAAACAP3/AAABAAAAAAACAP7/AAABAAAAAAACAP//AAABAAAAAAACAAAAAAABAAAAAAACAAEAAAABAAAAAAACAAIAAAABAAAAAAABAAIAAAABAAAAAAAAAAIAAAABAAAAAAD//wIAAAABAAAAAAD+/wIAAAABAAAAAAD9/wIAAAABAAAAAAD9/wEAAAABAAAAAAD9/wAAAAABAAAAAAD9////AAABAAAAAAD9//7/AAABAAAAAAD+//7/AAABAAAAAAD///7/AAABAAAAAAAAAP7/AAABAAAAAAABAP7/AAABAAAAAAABAP//AAABAAAAAAABAAAAAAABAAAAAAABAAEAAAABAAAAAAAAAAEAAAABAAAAAAD//wEAAAABAAAAAAD+/wEAAAABAAAAAAD+/wAAAAABAAAAAAD+////AAABAAAAAAD/////AAABAAAAAAAAAP//AAABAAAAAAAAAAAAAAABAAAAAAD//wAAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_u82pb")
+
+[node name="Map" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAD9/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAD//wIAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAIAAAAAAAAAAAACAAIAAAAAAAAAAAACAAEAAAAAAAAAAAACAAAAAAAAAAAAAAACAP//AAAAAAAAAAACAP7/AAAAAAAAAAACAP3/AAAAAAAAAAABAP3/AAAAAAAAAAAAAP3/AAAAAAAAAAD///3/AAAAAAAAAAD+//3/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD+/wEAAAAAAAAAAAD//wEAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAABAAAAAAAAAAAAAAABAP//AAAAAAAAAAABAP7/AAAAAAAAAAAAAP7/AAAAAAAAAAD///7/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD+/wAAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_pls23")
+
+[node name="Player" type="Sprite2D" parent="."]
+z_index = 2
+position = Vector2(80, 80)
+texture = ExtResource("2_qqero")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(5, 5)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -224.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qqero")
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 46
+text = "Travel to"

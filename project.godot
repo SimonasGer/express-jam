@@ -11,10 +11,15 @@ config_version=5
 [application]
 
 config/name="Express Jam"
-run/main_scene="res://scenes/surface.tscn"
+run/main_scene="uid://b0xjqnm1wk4k6"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=320
+window/size/viewport_height=180
+window/size/mode=3
 
 [dotnet]
 

@@ -6,8 +6,10 @@ public partial class Player : CharacterBody2D
 	public const float speed = 300.0f;
 	private Sprite2D sprite;
 	[Export] public ColorRect DepthOverlay;
+	[Export] public HSlider breathSlider;
 	private const float MaxDepth = 10000f;
-
+	public int health = 3, maxHealth = 3;
+	public float breath = 60.0f, maxBreath = 60.0f;
 
 	public override void _Ready()
 	{
@@ -20,6 +22,12 @@ public partial class Player : CharacterBody2D
 	}
 
 	public override void _PhysicsProcess(double delta)
+	{
+		Movement();
+		Breath(delta);
+	}
+
+	private void Movement()
 	{
 		Vector2 dir = Vector2.Zero;
 
@@ -46,5 +54,23 @@ public partial class Player : CharacterBody2D
 
 		Velocity = dir.Normalized() * speed;
 		MoveAndSlide();
+	}
+
+	private void Breath(double delta)
+	{
+		breath -= (float)delta;
+		breathSlider.Value = breath;
+		if (breath < 0)
+		{
+			GetTree().ChangeSceneToFile("res://scenes/surface.tscn");
+		}
+	}
+
+	public void Die()
+	{
+		if (health == 0)
+		{
+			GetTree().ChangeSceneToFile("res://scenes/surface.tscn");
+		}
 	}
 }

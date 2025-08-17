@@ -1,9 +1,89 @@
-[gd_scene load_steps=3 format=3 uid="uid://bn3tpjej8dqxq"]
+[gd_scene load_steps=5 format=3 uid="uid://bn3tpjej8dqxq"]
 
 [ext_resource type="Script" uid="uid://br2ra4chl4jo3" path="res://scripts/LevelManager.cs" id="1_d5gag"]
 [ext_resource type="PackedScene" uid="uid://do8836drwmmek" path="res://scenes/player.tscn" id="1_whmo1"]
+[ext_resource type="Script" uid="uid://qv0a2rff65ai" path="res://scripts/Camera.cs" id="3_ci3s7"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_d5gag"]
 
 [node name="Underwater" type="Node2D"]
 script = ExtResource("1_d5gag")
 
-[node name="Player" parent="." instance=ExtResource("1_whmo1")]
+[node name="Player" parent="." node_paths=PackedStringArray("DepthOverlay", "breathSlider") instance=ExtResource("1_whmo1")]
+position = Vector2(0, 136)
+DepthOverlay = NodePath("../Camera2D/ColorRect")
+breathSlider = NodePath("../CanvasLayer/Breath")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(-1000, 0)
+rotation = 1.5708
+shape = SubResource("WorldBoundaryShape2D_d5gag")
+
+[node name="TopWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_d5gag")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(1000, 0)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_d5gag")
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(0, 128)
+zoom = Vector2(3, 3)
+position_smoothing_enabled = true
+script = ExtResource("3_ci3s7")
+player = NodePath("../Player")
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D"]
+z_index = 1000
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -712.0
+offset_top = -704.0
+offset_right = 736.0
+offset_bottom = 464.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="FishLabel" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_right = 141.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 44
+text = "Fish: 0"
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 141.0
+offset_bottom = 152.0
+theme_override_font_sizes/font_size = 44
+text = "Health: 3/3"
+
+[node name="Breath" type="HSlider" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 60.0
+value = 60.0
+editable = false
+scrollable = false

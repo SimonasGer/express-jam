@@ -6,9 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(14, 29)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DepthOverlay")]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g2els")
-DepthOverlay = NodePath("Camera2D/ColorRect")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, -1.5)
@@ -16,20 +15,3 @@ shape = SubResource("RectangleShape2D_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_3vyb7")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-
-[node name="ColorRect" type="ColorRect" parent="Camera2D"]
-z_index = 1000
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -446.0
-offset_top = -276.0
-offset_right = 471.0
-offset_bottom = 278.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
