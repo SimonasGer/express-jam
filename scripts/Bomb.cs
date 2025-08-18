@@ -24,6 +24,7 @@ public partial class Bomb : CharacterBody2D
 		{
 			player.health--;
 			label.Text = $"Health: {player.health}/{player.maxHealth}";
+			levelManager.bombCount--;
 			player.Die();
 			QueueFree();
 		}
@@ -33,6 +34,7 @@ public partial class Bomb : CharacterBody2D
 	{
 		if (Position.DistanceTo(player.Position) > 1500)
 		{
+			levelManager.bombCount--;
 			QueueFree();
 		}
 	}

@@ -20,6 +20,7 @@ public partial class Bubble : CharacterBody2D
 		Despawn();
 		if (area2D.GetOverlappingBodies().Contains(player))
 		{
+			levelManager.bubbleCount--;
 			player.breath += 10.0f;
 			if (player.breath > player.maxBreath)
 			{
@@ -33,6 +34,7 @@ public partial class Bubble : CharacterBody2D
 	{
 		if (Position.DistanceTo(player.Position) > 1500)
 		{
+			levelManager.bubbleCount--;
 			QueueFree();
 		}
 	}

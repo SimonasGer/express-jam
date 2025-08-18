@@ -10,11 +10,15 @@ public partial class LevelManager : Node2D
 	private PackedScene bombScene = (PackedScene)ResourceLoader.Load("res://scenes/bomb.tscn");
 	private PackedScene bubbleScene = (PackedScene)ResourceLoader.Load("res://scenes/bubble.tscn");
 	private Node2D thing;
+	private Label label;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		var gameData = GetNode<GameData>("/root/GameData");
 		caughtFish = gameData.FishCount;
+		label = GetNode<Label>("/root/Underwater/CanvasLayer/Panel/FishLabel");
+		label.Text = $"Fish: {caughtFish}";
+
 		rng.Randomize();
 		player = GetNode<Player>("Player");
 	}
@@ -22,9 +26,12 @@ public partial class LevelManager : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		maxFish = (int)(player.Position.Y / 100);
-		maxBombs = (int)(player.Position.Y / 300);
-		maxBubbles = (int)(player.Position.Y / 200);
+		var gameData = GetNode<GameData>("/root/GameData");
+
+		maxFish = (int)(player.Position.Y / gameData.TileData[gameData.PlayerGridPos].X);
+		maxBubbles = (int)((1000.0f - player.Position.Y) / gameData.TileData[gameData.PlayerGridPos].Y);
+		maxBombs = (int)(player.Position.Y / gameData.TileData[gameData.PlayerGridPos].Z);
+		
 
 		SpawnEntity("fish", fishCount, maxFish);
 		SpawnEntity("bomb", bombCount, maxBombs);
@@ -71,7 +78,6 @@ public partial class LevelManager : Node2D
 
 		AddChild(thing);
 		count++;
-		thing.TreeExited += () => count--;
 		switch (entity)
 		{
 			case "fish":

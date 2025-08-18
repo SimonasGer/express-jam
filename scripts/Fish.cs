@@ -19,6 +19,7 @@ public partial class Fish : CharacterBody2D
 		player = GetNode<Player>("/root/Underwater/Player");
 		label = GetNode<Label>("/root/Underwater/CanvasLayer/Panel/FishLabel");
 		levelManager = GetNode<LevelManager>("/root/Underwater");
+
 		right = Position.X < 0;
 		if (!right)
 		{
@@ -35,6 +36,7 @@ public partial class Fish : CharacterBody2D
 		{
 			levelManager.caughtFish++;
 			label.Text = $"Fish: {levelManager.caughtFish}";
+			levelManager.fishCount--;
 			QueueFree();
 		}
 	}
@@ -49,6 +51,7 @@ public partial class Fish : CharacterBody2D
 	{
 		if (Position.DistanceTo(player.Position) > 1500)
 		{
+			levelManager.fishCount--;
 			QueueFree();
 		}
 	}

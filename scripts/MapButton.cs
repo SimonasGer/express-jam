@@ -4,12 +4,14 @@ using System;
 public partial class MapButton : Button
 {
 	private WorldMap worldMap;
+	private Label fish;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		worldMap = GetNode<WorldMap>("/root/WorldMap");
-
+		fish = GetNode<Label>("/root/WorldMap/Info/Panel/Fish");
 		Pressed += OnButtonPressed;
+		TooltipText = "You need 30 fish to travel, diving is free.";
 	}
 	private void OnButtonPressed()
 	{
@@ -46,6 +48,9 @@ public partial class MapButton : Button
 
 	private void OnTravel()
 	{
+		if (worldMap.caughtFish < 30) return;
+		worldMap.caughtFish -= 30;
+		fish.Text = $"Fish: {worldMap.caughtFish}";
 		worldMap.playerPos = worldMap.gridPos;
 		Vector2 worldPos = worldMap.map.MapToLocal(worldMap.gridPos);
 		worldMap.player.Position = worldPos;

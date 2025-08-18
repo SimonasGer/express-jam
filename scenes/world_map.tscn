@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://csp63sropugao"]
+[gd_scene load_steps=11 format=4 uid="uid://csp63sropugao"]
 
 [ext_resource type="Texture2D" uid="uid://h8vmuuassdya" path="res://sprites/map.png" id="1_oru6e"]
 [ext_resource type="Script" uid="uid://b0h73agh3ajfx" path="res://scripts/WorldMap.cs" id="1_u82pb"]
 [ext_resource type="Texture2D" uid="uid://cylxtt8ka5flk" path="res://sprites/player.png" id="2_qqero"]
 [ext_resource type="Script" uid="uid://b0fs4ktlwvtsq" path="res://scripts/MapButton.cs" id="4_pls23"]
+[ext_resource type="Script" uid="uid://cj82ws27lga5e" path="res://scripts/PauseMenu.cs" id="5_qj3iy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qqero"]
 texture = ExtResource("1_oru6e")
@@ -50,9 +51,9 @@ texture = ExtResource("2_qqero")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(5, 5)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Info" type="CanvasLayer" parent="."]
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
+[node name="Panel" type="Panel" parent="Info"]
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
@@ -62,7 +63,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qqero")
 
-[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+[node name="Button" type="Button" parent="Info/Panel"]
 layout_mode = 0
 offset_right = 416.0
 offset_bottom = 72.0
@@ -70,10 +71,47 @@ theme_override_font_sizes/font_size = 46
 text = "Select a tile"
 script = ExtResource("4_pls23")
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+[node name="SpawnRates" type="Label" parent="Info/Panel"]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 72.0
 offset_right = 240.0
 offset_bottom = 252.0
 theme_override_font_sizes/font_size = 42
+
+[node name="Fish" type="Label" parent="Info/Panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 256.0
+offset_right = 240.0
+offset_bottom = 436.0
+theme_override_font_sizes/font_size = 42
+text = "Fish: 0"
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("5_qj3iy")
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qqero")
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_right = 416.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 46
+text = "Resume"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_top = 72.0
+offset_right = 416.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 46
+text = "Quit"

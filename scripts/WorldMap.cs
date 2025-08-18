@@ -6,12 +6,13 @@ public partial class WorldMap : Node2D
 {
 	public TileMapLayer fow, map;
 	public int caughtFish = 0;
-	private Vector2 fishRate = new(50, 150); //will adjust numbers later
+	private Vector2 fishRate = new(50, 150);
 	private Vector2 bubbleRate = new(50, 150);
 	private Vector2 bombRate = new(50, 150);
 	public Sprite2D player;
 	private Button button;
 	private Label info;
+	private Label fish;
 	public Dictionary<Vector2I, Vector3I> dict = new(36);
 	public List<Vector2I> revealedTiles = [];
 	public Vector2I playerPos;
@@ -24,11 +25,11 @@ public partial class WorldMap : Node2D
 		map = GetNode<TileMapLayer>("Map");
 		fow = GetNode<TileMapLayer>("Fow");
 		player = GetNode<Sprite2D>("Player");
-		button = GetNode<Button>("CanvasLayer/Panel/Button");
-		info = GetNode<Label>("CanvasLayer/Panel/Label");
-		
-		var gameData = GetNode<GameData>("/root/GameData");
+		button = GetNode<Button>("Info/Panel/Button");
+		info = GetNode<Label>("Info/Panel/SpawnRates");
+		fish = GetNode<Label>("Info/Panel/Fish");
 
+		var gameData = GetNode<GameData>("/root/GameData");
 		if (gameData.TileData.Count > 0)
 		{
 			LoadData();
@@ -46,7 +47,7 @@ public partial class WorldMap : Node2D
 		coastPos = gameData.CoastGridPos;
 		caughtFish = gameData.FishCount;
 		revealedTiles = gameData.RevealedTiles;
-
+		fish.Text = $"Fish: {caughtFish}";
 		PlaceCoast(coastPos);
 		PlacePlayer(playerPos);
 
@@ -58,6 +59,7 @@ public partial class WorldMap : Node2D
 
 	private void PopulateData()
 	{
+		fish.Text = $"Fish: 0";
 		List<Vector2I> allTiles = [];
 
 		for (int x = -3; x <= 2; x++)
@@ -101,6 +103,13 @@ public partial class WorldMap : Node2D
 		map.SetCell(gridPos, 0, new Vector2I(2, 0));
 	}
 
+	private static string SpawnRate(int rate)
+	{
+		if (rate < 75) return "High";
+		if (rate < 125) return "Medium";
+		return "Low";
+	}
+
 	public void SelectTile(Vector2I gridPos)
 	{
 		if (!IsReachable(playerPos, gridPos))
@@ -112,8 +121,11 @@ public partial class WorldMap : Node2D
 
 		if (fow.GetCellSourceId(gridPos) == -1)
 		{
-			info.Text = $"Fish: {dict[gridPos].X}\nBubbles: {dict[gridPos].Y}\nBombs: {dict[gridPos].Z}";
+			info.Text = $"Fish: {SpawnRate(dict[gridPos].X)}\nBubbles: {SpawnRate(dict[gridPos].Y)}\nBombs: {SpawnRate(dict[gridPos].Z)}";
 			if (!revealedTiles.Contains(gridPos)) revealedTiles.Add(gridPos);
+			
+			if (playerPos == coastPos) Win();
+
 			if (gridPos == playerPos)
 			{
 				button.Text = "Dive";
@@ -128,6 +140,11 @@ public partial class WorldMap : Node2D
 			button.Text = "Travel";
 			info.Text = "";
 		}
+	}
+
+	private void Win()
+	{
+		GetTree().ChangeSceneToFile("res://scenes/win.tscn");
 	}
 
 	private bool IsReachable(Vector2I playerPos, Vector2I gridPos)

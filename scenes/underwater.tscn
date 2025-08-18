@@ -1,10 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://bn3tpjej8dqxq"]
+[gd_scene load_steps=7 format=3 uid="uid://bn3tpjej8dqxq"]
 
 [ext_resource type="Script" uid="uid://br2ra4chl4jo3" path="res://scripts/LevelManager.cs" id="1_d5gag"]
 [ext_resource type="PackedScene" uid="uid://do8836drwmmek" path="res://scenes/player.tscn" id="1_whmo1"]
 [ext_resource type="Script" uid="uid://qv0a2rff65ai" path="res://scripts/Camera.cs" id="3_ci3s7"]
+[ext_resource type="Script" uid="uid://cj82ws27lga5e" path="res://scripts/PauseMenu.cs" id="4_mnc1a"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_d5gag"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsoto"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Underwater" type="Node2D"]
 script = ExtResource("1_d5gag")
@@ -87,3 +91,31 @@ max_value = 60.0
 value = 60.0
 editable = false
 scrollable = false
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("4_mnc1a")
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bsoto")
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_right = 416.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 46
+text = "Resume"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_top = 72.0
+offset_right = 416.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 46
+text = "Quit"

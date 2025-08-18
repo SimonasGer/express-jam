@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhamep2iskb1f"]
+
+[ext_resource type="Script" uid="uid://cj82ws27lga5e" path="res://scripts/PauseMenu.cs" id="1_r4oei"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_826fv"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Win" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("1_r4oei")
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_826fv")
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_right = 416.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 46
+text = "Resume"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel"]
+layout_mode = 0
+offset_top = 72.0
+offset_right = 416.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 46
+text = "Quit"
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 5456.0
+offset_bottom = 3168.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "You win, you found the coast, congratulations. (insert cool cutscene here)"
