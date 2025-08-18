@@ -24,7 +24,9 @@ public partial class MainMenu : Control
 
 	private void OnLoad()
 	{
-
+		var gameData = GetNode<GameData>("/root/GameData");
+		gameData.Load();
+		GetTree().ChangeSceneToFile("res://scenes/world_map.tscn");
 	}
 
 	private void OnQuit()

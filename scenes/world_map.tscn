@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=4 uid="uid://csp63sropugao"]
+[gd_scene load_steps=10 format=4 uid="uid://csp63sropugao"]
 
 [ext_resource type="Texture2D" uid="uid://h8vmuuassdya" path="res://sprites/map.png" id="1_oru6e"]
 [ext_resource type="Script" uid="uid://b0h73agh3ajfx" path="res://scripts/WorldMap.cs" id="1_u82pb"]
 [ext_resource type="Texture2D" uid="uid://cylxtt8ka5flk" path="res://sprites/player.png" id="2_qqero"]
+[ext_resource type="Script" uid="uid://b0fs4ktlwvtsq" path="res://scripts/MapButton.cs" id="4_pls23"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qqero"]
 texture = ExtResource("1_oru6e")
@@ -56,14 +57,23 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -224.0
+offset_left = -416.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qqero")
 
 [node name="Button" type="Button" parent="CanvasLayer/Panel"]
 layout_mode = 0
-offset_right = 224.0
-offset_bottom = 64.0
+offset_right = 416.0
+offset_bottom = 72.0
 theme_override_font_sizes/font_size = 46
-text = "Travel to"
+text = "Select a tile"
+script = ExtResource("4_pls23")
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 240.0
+offset_bottom = 252.0
+theme_override_font_sizes/font_size = 42

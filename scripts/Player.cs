@@ -10,14 +10,16 @@ public partial class Player : CharacterBody2D
 	private const float MaxDepth = 10000f;
 	public int health = 3, maxHealth = 3;
 	public float breath = 60.0f, maxBreath = 60.0f;
+	private LevelManager levelManager;
 
 	public override void _Ready()
 	{
 		sprite = GetNode<Sprite2D>("Sprite2D");
+		levelManager = GetNode<LevelManager>("/root/Underwater");
 	}
 	public override void _Process(double delta)
 	{
-		float depth = Mathf.Clamp((float)Position.Y / MaxDepth, 0f, 1f);
+		float depth = Mathf.Clamp(Position.Y / MaxDepth, 0f, 1f);
 		DepthOverlay.Color = new Color(0, 0, 0, depth);
 	}
 
@@ -62,7 +64,12 @@ public partial class Player : CharacterBody2D
 		breathSlider.Value = breath;
 		if (breath < 0)
 		{
-			GetTree().ChangeSceneToFile("res://scenes/surface.tscn");
+			var gameData = GetNode<GameData>("/root/GameData");
+
+			gameData.FishCount = levelManager.caughtFish;
+			gameData.Save();
+
+			GetTree().ChangeSceneToFile("res://scenes/world_map.tscn");
 		}
 	}
 
@@ -70,7 +77,7 @@ public partial class Player : CharacterBody2D
 	{
 		if (health == 0)
 		{
-			GetTree().ChangeSceneToFile("res://scenes/surface.tscn");
+			GetTree().ChangeSceneToFile("res://scenes/world_map.tscn");
 		}
 	}
 }

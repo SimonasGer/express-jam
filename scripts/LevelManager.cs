@@ -5,7 +5,7 @@ public partial class LevelManager : Node2D
 {
 	private Player player;
 	private readonly RandomNumberGenerator rng = new();
-	public int maxFish, maxBombs, maxBubbles, fishCount = 0, caughtFish = 0, bombCount = 0, bubbleCount = 0;
+	public int maxFish, maxBombs, maxBubbles, fishCount = 0, caughtFish, bombCount = 0, bubbleCount = 0;
 	private PackedScene fishScene = (PackedScene)ResourceLoader.Load("res://scenes/fish.tscn");
 	private PackedScene bombScene = (PackedScene)ResourceLoader.Load("res://scenes/bomb.tscn");
 	private PackedScene bubbleScene = (PackedScene)ResourceLoader.Load("res://scenes/bubble.tscn");
@@ -13,6 +13,8 @@ public partial class LevelManager : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		var gameData = GetNode<GameData>("/root/GameData");
+		caughtFish = gameData.FishCount;
 		rng.Randomize();
 		player = GetNode<Player>("Player");
 	}

@@ -15,6 +15,10 @@ run/main_scene="uid://b0xjqnm1wk4k6"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 boot_splash/show_image=false
 
+[autoload]
+
+GameData="*res://scripts/GameData.cs"
+
 [display]
 
 window/size/viewport_width=320

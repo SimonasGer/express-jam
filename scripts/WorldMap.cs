@@ -4,13 +4,19 @@ using System.Collections.Generic;
 
 public partial class WorldMap : Node2D
 {
-	private TileMapLayer fow, map;
+	public TileMapLayer fow, map;
+	public int caughtFish = 0;
 	private Vector2 fishRate = new(50, 150); //will adjust numbers later
 	private Vector2 bubbleRate = new(50, 150);
 	private Vector2 bombRate = new(50, 150);
-	private Sprite2D player;
+	public Sprite2D player;
 	private Button button;
-	private readonly Dictionary<Vector2I, Vector3I> dict;
+	private Label info;
+	public Dictionary<Vector2I, Vector3I> dict = new(36);
+	public List<Vector2I> revealedTiles = [];
+	public Vector2I playerPos;
+	public Vector2I coastPos;
+	public Vector2I gridPos;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,7 +25,35 @@ public partial class WorldMap : Node2D
 		fow = GetNode<TileMapLayer>("Fow");
 		player = GetNode<Sprite2D>("Player");
 		button = GetNode<Button>("CanvasLayer/Panel/Button");
+		info = GetNode<Label>("CanvasLayer/Panel/Label");
+		
+		var gameData = GetNode<GameData>("/root/GameData");
+
+		if (gameData.TileData.Count > 0)
+		{
+			LoadData();
+			return;
+		}
 		PopulateData();
+	}
+
+	private void LoadData()
+	{
+		var gameData = GetNode<GameData>("/root/GameData");
+
+		dict = gameData.TileData;
+		playerPos = gameData.PlayerGridPos;
+		coastPos = gameData.CoastGridPos;
+		caughtFish = gameData.FishCount;
+		revealedTiles = gameData.RevealedTiles;
+
+		PlaceCoast(coastPos);
+		PlacePlayer(playerPos);
+
+		foreach (var pos in revealedTiles)
+		{
+			fow.EraseCell(pos);
+		}
 	}
 
 	private void PopulateData()
@@ -35,8 +69,11 @@ public partial class WorldMap : Node2D
 		}
 
 		Utils.ShuffleList(allTiles);
+
 		PlaceCoast(allTiles[0]);
 		PlacePlayer(allTiles[1]);
+		coastPos = allTiles[0];
+		playerPos = allTiles[1];
 
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();
@@ -54,7 +91,7 @@ public partial class WorldMap : Node2D
 
 	private void PlacePlayer(Vector2I gridPos)
 	{
-		fow.SetCell(gridPos, -1);
+		fow.EraseCell(gridPos);
 		Vector2 worldPos = map.MapToLocal(gridPos);
 		player.Position = worldPos;
 	}
@@ -64,9 +101,49 @@ public partial class WorldMap : Node2D
 		map.SetCell(gridPos, 0, new Vector2I(2, 0));
 	}
 
-	private void Reveal(Vector2I gridPos)
+	public void SelectTile(Vector2I gridPos)
 	{
-		//later
+		if (!IsReachable(playerPos, gridPos))
+		{
+			info.Text = "";
+			button.Text = "Tile Unreachable";
+			return;
+		}
+
+		if (fow.GetCellSourceId(gridPos) == -1)
+		{
+			info.Text = $"Fish: {dict[gridPos].X}\nBubbles: {dict[gridPos].Y}\nBombs: {dict[gridPos].Z}";
+			if (!revealedTiles.Contains(gridPos)) revealedTiles.Add(gridPos);
+			if (gridPos == playerPos)
+			{
+				button.Text = "Dive";
+			}
+			else
+			{
+				button.Text = "Travel";
+			}
+		}
+		else
+		{
+			button.Text = "Travel";
+			info.Text = "";
+		}
+	}
+
+	private bool IsReachable(Vector2I playerPos, Vector2I gridPos)
+	{
+		int px = playerPos.X;
+		int py = playerPos.Y;
+		int gx = gridPos.X;
+		int gy = gridPos.Y;
+
+		if (((gx == px + 1 && gy == py) ||
+			(gx == px - 1 && gy == py) ||
+			(gy == py + 1 && gx == px) ||
+			(gy == py - 1 && gx == px) ||
+			(playerPos == gridPos)) &&
+			map.GetCellSourceId(gridPos) != -1) return true;
+		return false;
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -77,14 +154,13 @@ public partial class WorldMap : Node2D
 		{
 			Vector2 worldPos = GetGlobalMousePosition();
 
-			// Now map to grid
-			var gridSize = 32; // your tile size
-			var gridPos = new Vector2I(
+			var gridSize = 32;
+			gridPos = new Vector2I(
 				Mathf.FloorToInt(worldPos.X / gridSize),
 				Mathf.FloorToInt(worldPos.Y / gridSize)
 			);
 
-			Reveal(gridPos);
+			SelectTile(gridPos);
 		}
 	}
 }
